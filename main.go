@@ -7,9 +7,16 @@ import (
 	"log"
 )
 
-type Test struct {
-	Id   int64
-	Test string
+type Email struct {
+	Id     int64
+	Email  string
+	UserId int64
+}
+
+type User struct {
+	Id     int64
+	Name   string `sql:"type:varchar(100);"`
+	Emails []Email
 }
 
 func main() {
@@ -24,9 +31,17 @@ func main() {
 
 	db.DB()
 
-	//db.CreateTable(&Test{})
+	//db.DropTable(&Test{})
 
-	db.Save(&Test{Test: "hej2"})
+	db.CreateTable(&User{})
+	db.CreateTable(&Email{})
+
+	test := User{
+		Name:   "hej2",
+		Emails: []Email{{Email: "hej"}, {Email: "twa"}},
+	}
+
+	db.Create(&test)
 
 	fmt.Println("Hello world 2!")
 }
